@@ -1,0 +1,42 @@
+#!/usr/bin/perl -w
+
+use strict;
+use Text::CSV_XS;
+
+use vars qw(@PARAM);
+@PARAM = @ARGV;
+print 'no param..source file and indexes with space' and exit 1 if ($#PARAM == 0);
+
+my $source = shift @PARAM;
+my @indexes = split(/ /, shift @PARAM);
+
+my $csv = Text::CSV_XS->new ({ binary => 1 });
+open my $fh, "<", "$source";
+my $target = ($source =~ tr/[\/ | \.]/_/);
+open my $fh_out, ">", "result_${target}.csv";
+
+my @sources = ();
+$csv->getline ($fh);
+while (not $csv->eof and my $columns = $csv->getline ($fh)) {
+	# <- print "@$columns[0]\n";
+	# <- print "$sources[0]" . "\n";
+	# <- print $sources[$indexes[0]][0] . "\n";
+
+ 	for my $c (@sources) {
+   		my $skip = 0;
+   		for my $i (@indexes) {
+   			if (@$c[$i] == @$columns[$i]) {
+	    		print "Unique Key Violation : @$c[$i] == @$columns[$i]\n";
+   				$skip = 1;
+   				last;
+   			}
+   		}
+   		print $fh_out "@$columns\n" if $skip;
+ 		# <- print $fh_out map({ "[$_]\t" } @$columns), "\n";
+	}
+	unshift(@sources, $columns);
+}
+
+close $fh_out;
+close $fh;
+
