@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+
+###
+# Not Yet Ready.. Building now...
+##
+
+use strict;
+use warnings;
+
+use Text::CSV_XS;
+
+use vars qw(@PARAM);
+@PARAM = @ARGV;
+print 'no param..source file and indexes with a space' and exit 1 if ($#PARAM < 1 - 1);
+
+my $header = undef;
+my $source = shift @PARAM;
+my @indexes = split(/ /, shift @PARAM);
+
+my $csv = Text::CSV_XS->new ({ binary => 1 });
+open my $fh, "<", "$source";
+my $target = ($source =~ tr/[\/ | \.]/_/);
+open my $fh_out, ">", "result_${target}.csv";
+
+my @sources = ();
+$csv->getline ($fh) if defined($header);
+while (not $csv->eof and my $columns = $csv->getline ($fh)) {
+	my %duplicate = {};
+	
+	last if grep {$main::duplicate{$_} >= 2} grep {++$main::duplicate{$columns} if @$columns[$_] == $sources[$_]} (@indexes) > 0;
+
+	unshift(@sources, $columns);
+}
+
+close $fh_out;
+close $fh;
+
