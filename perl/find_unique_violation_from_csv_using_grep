@@ -1,7 +1,8 @@
 #!/usr/bin/perl
 
 ###
-# Not Yet Ready.. Building now...
+# find unique violation from csv for migration.
+# usage : 'where source file ' which indexes..
 ##
 
 use strict;
@@ -13,7 +14,7 @@ use vars qw(@PARAM);
 @PARAM = @ARGV;
 print 'no param..source file and indexes with a space' and exit 1 if ($#PARAM < 1 - 1);
 
-my $header = undef;
+my $header = '';
 my $source = shift @PARAM;
 my @indexes = split(/ /, shift @PARAM);
 
@@ -25,9 +26,17 @@ open my $fh_out, ">", "result_${target}.csv";
 my @sources = ();
 $csv->getline ($fh) if defined($header);
 while (not $csv->eof and my $columns = $csv->getline ($fh)) {
-	my %duplicate = {};
+	my %duplicate;
+	my $skip = 0;
+
+	for my $s (@sources) {
+		my @key;
+		my $key_joined;
+		
+		$key_joined = join('_', @key) if grep {unshift(@key, $s->[$_])} (@indexes);
 	
-	last if grep {$main::duplicate{$_} >= 2} grep {++$main::duplicate{$columns} if @$columns[$_] == $sources[$_]} (@indexes) > 0;
+		print $fh_out "@$columns\n" if grep {$duplicate{$key_joined} >= $#indexes + 1 + 2 - 1} grep {++$duplicate{$key_joined} if $columns->[$_] eq $s->[$_]} (@indexes) > 0;
+	}
 
 	unshift(@sources, $columns);
 }
