@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script>
+    $(function () {
+        $.getJSON("http://localhost:9000/user?callback=?",
+                function (data) {
+                    $("<p>").append("<p>" + data.id + data.age + "</p>").appendTo("#users");
+                });
+
+        $.getJSON("http://localhost:9000/api/face/genre/all?callback=?",
+                function (data) {
+                    console.log(data.length);
+                    $.each(data, function (i, item) {
+                        console.log(data[i].genreId);
+                        $("<p>").append("<p>ジャンル番号" + data[i].genreId + "</p>")
+                                .attr("id", "genre" + data[i].genreId)
+                                .appendTo("#facegenre");
+                        $.each(data[i].faceBlogger, function (loop, blogger) {
+                            console.log(blogger);
+                            // TODO make the placeholder below to library..							
+							var appended = "<img src=\":url:id:type\">";  // or "<img src=\":0:1:2\">" then /:[0-9]/g							
+								appended.replace(/:[a-z]*/g, function (m) {				
+  								return {    
+  									':url' : 'http://localhost/face/stat'
+  									, ':id' : blogger.id
+  									, ':type' : '.jpg'
+ 								}[m];
+							});
+                            
+                            $("<p>").append(appended)
+                                    .appendTo("#genre" + data[i].genreId)
+                        });
+                    })
+                });                   
+    });
+
+
+</script>
+<body>
+<button id="get_jsonp">JSONP読み込み</button>
+<div id="users"></div>
+<div id="facegenre"></div>
+</body>
+</html>
