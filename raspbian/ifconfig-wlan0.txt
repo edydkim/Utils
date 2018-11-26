@@ -1,4 +1,4 @@
-enxb827eb980546: flags=4098<BROADCAST,MULTICAST>  mtu 1500
+enxb827eb980546: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         ether b8:27:eb:98:05:46  txqueuelen 1000  (Ethernet)
         RX packets 0  bytes 0 (0.0 B)
         RX errors 0  dropped 0  overruns 0  frame 0
@@ -15,11 +15,11 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
 wlan0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 192.168.2.8  netmask 255.255.255.0  broadcast 192.168.2.255
+        inet 192.168.2.44  netmask 255.255.255.0  broadcast 192.168.2.255
         inet6 fe80::ba27:ebff:fecd:5013  prefixlen 64  scopeid 0x20<link>
         ether b8:27:eb:cd:50:13  txqueuelen 1000  (Ethernet)
-        RX packets 20  bytes 5427 (5.2 KiB)
+        RX packets 33  bytes 5945 (5.8 KiB)
         RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 35  bytes 6211 (6.0 KiB)
+        TX packets 38  bytes 6651 (6.4 KiB)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
